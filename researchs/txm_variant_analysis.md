@@ -77,7 +77,7 @@ causing a cascade of instruction-level diffs in code that references these strin
 
 ### 2. String Reference Adjustments (Code Diffs)
 
-The remaining `__TEXT` code diffs are `ADD` instruction immediate adjustments
+The remaining diffs are in `__TEXT_EXEC` — all `ADD` instruction immediate adjustments
 compensating for the 1-byte string shift:
 
 ```
@@ -85,14 +85,24 @@ RELEASE:  add  x8, x8, #0x822   ; points to string at original offset
 RESEARCH: add  x8, x8, #0x823   ; points to same string, shifted +1
 ```
 
-- ADD immediate adjustments: **0** regions
-- Other diffs: **86** regions
-- String data region: **1** region (3282 bytes)
+- ADD immediate adjustments: **84** regions (all in `__TEXT_EXEC`)
+- Other code diffs: **0** regions
+- String data regions: **3** regions in `__TEXT` (3304 bytes total)
 
 Sample code diffs (first 10):
 
 | Offset | RELEASE instruction | RESEARCH instruction |
 |--------|---------------------|----------------------|
+| `0x2572c` | `add x8, x8, #0x822` | `add x8, x8, #0x823` |
+| `0x25794` | `add x8, x8, #0x861` | `add x8, x8, #0x862` |
+| `0x257d8` | `add x0, x0, #0x877` | `add x0, x0, #0x878` |
+| `0x25980` | `add x0, x0, #0x8d7` | `add x0, x0, #0x8d8` |
+| `0x25ac8` | `add x0, x0, #0x8a1` | `add x0, x0, #0x8a2` |
+| `0x25af0` | `add x4, x4, #0x8eb` | `add x4, x4, #0x8ec` |
+| `0x25b78` | `add x0, x0, #0x8f9` | `add x0, x0, #0x8fa` |
+| `0x25c34` | `add x2, x2, #0x911` | `add x2, x2, #0x912` |
+| `0x25c58` | `add x2, x2, #0x919` | `add x2, x2, #0x91a` |
+| `0x25c98` | `add x0, x0, #0x927` | `add x0, x0, #0x928` |
 
 ### 4. Functional Differences
 
