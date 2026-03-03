@@ -48,7 +48,6 @@ help:
 	@echo "Build:"
 	@echo "  make build                   Build + sign vphone-cli"
 	@echo "  make vphoned                 Cross-compile + sign vphoned for iOS"
-	@echo "  make install                 Build + copy to ./bin/"
 	@echo "  make clean                   Remove all build artifacts (keeps IPSWs)"
 	@echo ""
 	@echo "VM management:"
@@ -104,7 +103,7 @@ clean:
 # Build
 # ═══════════════════════════════════════════════════════════════════
 
-.PHONY: build install bundle
+.PHONY: build bundle
 
 build: $(BINARY)
 
@@ -128,11 +127,6 @@ bundle: build $(INFO_PLIST)
 	@cp -f $$(command -v idevice_id) $(BUNDLE)/Contents/MacOS/idevice_id
 	@codesign --force --sign - --entitlements $(ENTITLEMENTS) $(BUNDLE_BIN)
 	@echo "  bundled → $(BUNDLE)"
-
-install: build
-	mkdir -p ./bin
-	cp -f $(BINARY) ./bin/vphone-cli
-	@echo "Installed to ./bin/vphone-cli"
 
 # Cross-compile + sign vphoned daemon for iOS arm64 (requires ldid)
 .PHONY: vphoned
